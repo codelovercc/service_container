@@ -51,4 +51,4 @@ You can reset Top-level variable `$logPrinter` that defines in [services.dart](l
 
 ## Additional information
 
-In Flutter, you can use [flutter_service_container](https://pub.dev/packages/flutter_service_container).Ò
+In Flutter, you can use [flutter_service_container](https://pub.dev/packages/flutter_service_container).
