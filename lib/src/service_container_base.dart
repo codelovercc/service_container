@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:service_container/src/logging.dart';
+
+import 'logging.dart';
 
 part 'implements.dart';
 part 'service_descriptor.dart';
