@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Refactor logging and improve debug logs
+
 ## 1.0.1
 
 - Update example in README.md
