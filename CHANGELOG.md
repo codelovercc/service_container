@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Fix dart doc
+
 ## 1.0.2
 
 - Refactor logging and improve debug logs
