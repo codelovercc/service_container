@@ -165,8 +165,8 @@ final class ServiceProvider implements IServiceProvider, IDisposable, IAsyncDisp
 
   /// Root service provider
   ///
-  /// - [printDebugLogs]When `ture` print debug logs in debug-mode.
-  /// if you only want to enable service container debug logging please call [ServiceContainerLogging]
+  /// - [printDebugLogs] When `ture` print debug logs in debug-mode.
+  /// if you only want to enable service container debug logging please call [ServiceContainerLogging.enableDebugLogging]
   /// before service container is created and set this argument to `false`.
   /// To prevent duplicate log outputs, see [ServiceContainerLogging]
   ServiceProvider({bool printDebugLogs = false}) : _root = _ServiceProviderScope._root(printDebugLogs: printDebugLogs);
