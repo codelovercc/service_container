@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group("Service container", () {
     late ServiceProvider provider;
-    setUp(() => provider = ServiceProvider());
+    setUp(() => provider = ServiceProvider(printDebugLogs: true));
     tearDown(() {
       provider.dispose();
     });

@@ -143,8 +143,15 @@ class MyScopedDependencyService {
 
 ## Logging
 
-Use [logging](https://pub.dev/packages/logging) package to logging.
-You can reset Top-level variable `$logPrinter` that defines in [services.dart](lib/src/services.dart) to custom your log printer.
+Use [logging](https://pub.dev/packages/logging) package to logging.  
+***Logging only available in debug mode***  
+Use `ServiceContainerLogging.enableDebugLogging()` to enable logging in debug mode.  
+Use `ServiceContainerLogging.enableDebugLogPrinter(provider)` to print logs in debug mode.  
+You can reset Top-level variable `$logPrinter` that defines
+in [services.dart](lib/src/services.dart) to custom your log printer,
+always use `$logPrinter` service as your log printer.
+
+To configure service container logging use `ServiceContainerLogging` class.
 
 ## Additional information
 

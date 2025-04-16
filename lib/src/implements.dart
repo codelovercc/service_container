@@ -7,15 +7,14 @@ class _ServiceProviderScope implements IServiceScope, IServiceProvider {
   /// Root Service Provider
   late final _ServiceProviderScope _root;
 
-  Logger? _logger;
-
   /// Contains the descriptors that created instances from this scope.
   List<ServiceDescriptor>? _services;
+
+  static final Logger? _logger = ServiceContainerLogging._logger;
 
   _ServiceProviderScope({required _ServiceProviderScope root})
       : assert(root._isRoot, "Argument root is not a root scope."),
         _root = root,
-        _logger = root._logger,
         _isRoot = false {
     assert(() {
       _logger?.info("Service scope $hashCode constructing, root: $_isRoot");
@@ -23,11 +22,13 @@ class _ServiceProviderScope implements IServiceScope, IServiceProvider {
     }());
   }
 
-  _ServiceProviderScope._root() : _isRoot = true {
+  _ServiceProviderScope._root({bool printDebugLogs = false}) : _isRoot = true {
     _root = this;
-    _logger = getService<Logger>(_$serviceContainerLogger);
     assert(() {
-      _logger!.info("Service scope $hashCode constructing, root: $_isRoot");
+      if (printDebugLogs) {
+        ServiceContainerLogging.enableDebugLogPrinter(this);
+      }
+      _logger?.info("Service scope $hashCode constructing, root: $_isRoot");
       return true;
     }());
   }
@@ -127,7 +128,11 @@ class _ServiceProviderScope implements IServiceScope, IServiceProvider {
 
   T _createService<T>(ServiceDescriptor<T> descriptor) {
     assert(() {
-      _logger?.info("Creating, $descriptor");
+      if (descriptor._autoDispose == false) {
+        _logger?.info("Fetching, $descriptor");
+      } else {
+        _logger?.info("Creating, $descriptor");
+      }
       return true;
     }());
     return descriptor.factory(this);
@@ -159,7 +164,12 @@ final class ServiceProvider implements IServiceProvider, IDisposable, IAsyncDisp
   final _ServiceProviderScope _root;
 
   /// Root service provider
-  ServiceProvider() : _root = _ServiceProviderScope._root();
+  ///
+  /// - [printDebugLogs]When `ture` print debug logs in debug-mode.
+  /// if you only want to enable service container debug logging please call [ServiceContainerLogging]
+  /// before service container is created and set this argument to `false`.
+  /// To prevent duplicate log outputs, see [ServiceContainerLogging]
+  ServiceProvider({bool printDebugLogs = false}) : _root = _ServiceProviderScope._root(printDebugLogs: printDebugLogs);
 
   @override
   void dispose() => _root.dispose();

@@ -26,33 +26,31 @@ class ServiceDescriptor<T> {
   Map<_ServiceProviderScope, T>? _instances;
 
   /// Indicates that a singleton service instance is released by the container or the consumer.
+  ///
+  /// When `true` released by the container.
+  /// When `false` released by the consumer.
+  /// When `null`, it's not a singleton service.
   final bool? _autoDispose;
 
   ServiceDescriptor.singleton(this.factory)
       : lifeTime = ServiceLifeTime.singleton,
         serviceType = T,
-        _autoDispose = true,
-        _desc = "ServiceType: $T LifeTime: ${ServiceLifeTime.singleton.name}";
+        _autoDispose = true;
   ServiceDescriptor.singletonFrom(T instance)
       : lifeTime = ServiceLifeTime.singleton,
         serviceType = T,
-        _autoDispose = false,
-        _desc = "ServiceType: $T LifeTime: ${ServiceLifeTime.singleton.name}" {
+        _autoDispose = false {
     factory = (_) => instance;
   }
   ServiceDescriptor.scoped(this.factory)
       : lifeTime = ServiceLifeTime.scoped,
         serviceType = T,
-        _autoDispose = null,
-        _desc = "ServiceType: $T LifeTime: ${ServiceLifeTime.scoped.name}";
+        _autoDispose = null;
   ServiceDescriptor.transient(this.factory)
       : lifeTime = ServiceLifeTime.transient,
         serviceType = T,
-        _autoDispose = null,
-        _desc = "ServiceType: $T LifeTime: ${ServiceLifeTime.transient.name}";
-
-  final String _desc;
+        _autoDispose = null;
 
   @override
-  String toString() => _desc;
+  String toString() => "Descriptor: $hashCode ServiceType: $T LifeTime: ${lifeTime.name}";
 }

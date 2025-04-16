@@ -1,7 +1,7 @@
 import 'package:service_container/service_container.dart';
 
 void main() {
-  final provider = ServiceProvider();
+  final provider = ServiceProvider(printDebugLogs: true);
   final scope = provider.createScope();
   final scope2 = provider.createScope();
 
