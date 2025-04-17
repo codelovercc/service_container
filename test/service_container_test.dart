@@ -116,6 +116,18 @@ void main() {
       scope.dispose();
       expect(s, same(s1));
     });
+    test("getServices extension method should work", () {
+      final scope = provider.createScope();
+      final services = scope.provider.getServices(iterableDynamicServices);
+      expect(services.length, equals(iterableDynamicServices.length));
+      scope.dispose();
+    });
+    test("getServicesOfType extension method should work", () {
+      final scope = provider.createScope();
+      final services = scope.provider.getServicesOfType<IterableService>(iterableServices);
+      expect(services.length, equals(iterableServices.length));
+      scope.dispose();
+    });
   });
 }
 
@@ -143,6 +155,19 @@ ServiceDescriptor<MyScopedDisposableService> myScopedDisposableService =
     ServiceDescriptor.scoped((p) => MyScopedDisposableService());
 ServiceDescriptor<MyScopedAsyncDisposableService> myScopedAsyncDisposableService =
     ServiceDescriptor.scoped((p) => MyScopedAsyncDisposableService());
+
+List<ServiceDescriptor<IterableService>> iterableServices = [
+  ServiceDescriptor.singleton((p) => IterableService1()),
+  ServiceDescriptor.singleton((p) => IterableService2()),
+  ServiceDescriptor.singleton((p) => IterableService3()),
+  ServiceDescriptor.singleton((p) => IterableService4()),
+];
+
+List<ServiceDescriptor> iterableDynamicServices = [
+  mySingletonService,
+  myScopedService,
+  myTransientService,
+];
 
 abstract interface class IMySingletonService implements IDisposable {}
 
@@ -294,3 +319,13 @@ class MyScopedDisposableService implements IDisposable, IAsyncDisposable {
     return Future<void>.value();
   }
 }
+
+abstract class IterableService {}
+
+class IterableService1 extends IterableService {}
+
+class IterableService2 extends IterableService {}
+
+class IterableService3 extends IterableService {}
+
+class IterableService4 extends IterableService {}

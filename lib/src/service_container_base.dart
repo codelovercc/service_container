@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 
+part 'extensions.dart';
 part 'implements.dart';
 part 'logging.dart';
 part 'service_descriptor.dart';

@@ -25,6 +25,15 @@ class ServiceDescriptor<T> {
   /// cache for per [ServiceDescriptor] instance.
   Map<_ServiceProviderScope, T>? _instances;
 
+  /// Create instance map if it's null.
+  ///
+  /// This method will work if [T] is `dynamic`, because [T] is settled while creating [ServiceDescriptor].
+  /// In same cases, etc: `ServiceDescriptor<String>` will change to `ServiceDescriptor<dynamic>`,
+  /// if you create a Map and assign it to [ServiceDescriptor] variable, it will not work, it will throw type error
+  /// 'Type _Map<_ServiceProviderScope, dynamic> is not a subtype of type _Map<_ServiceProviderScope, T>',
+  /// but this method is an instance method, the [T] is deterministic when the [ServiceDescriptor] is created, so the following code works.
+  void _createInstanceMap() => _instances ??= {};
+
   /// Indicates that a singleton service instance is released by the container or the consumer.
   ///
   /// When `true` released by the container.

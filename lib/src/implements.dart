@@ -115,7 +115,7 @@ class _ServiceProviderScope implements IServiceScope, IServiceProvider {
         return cached;
       }
       final service = _createService(descriptor);
-      descriptor._instances ??= <_ServiceProviderScope, T>{};
+      descriptor._createInstanceMap();
       descriptor._instances![this] = service;
       if (service is IDisposable || service is IAsyncDisposable) {
         _services ??= [];
