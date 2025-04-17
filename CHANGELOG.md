@@ -1,3 +1,7 @@
+## 1.0.4
+
+- Implement extension methods for IServiceProvider for retrieving multiple services by descriptors.
+
 ## 1.0.3
 
 - Fix dart doc
