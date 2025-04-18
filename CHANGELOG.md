@@ -1,3 +1,7 @@
+## 1.0.7
+
+- Add service container configuration and override capability
+
 ## 1.0.6
 
 - Streamline service descriptor constructors
