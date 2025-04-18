@@ -128,6 +128,24 @@ void main() {
       expect(services.length, equals(iterableServices.length));
       scope.dispose();
     });
+    test("Fixed service type definition should work", () {
+      final scope1 = provider.createScope();
+      final scope2 = provider.createScope();
+      final singleton1 = scope1.provider.getService(fixedTypeSingleton);
+      final singleton2 = scope2.provider.getService(fixedTypeSingleton);
+      final singleton1Instanced = scope1.provider.getService(fixedTypeSingleton1);
+      final singleton2Instanced = scope2.provider.getService(fixedTypeSingleton1);
+      final scoped1 = scope1.provider.getService(fixedTypeScoped);
+      final scoped2 = scope2.provider.getService(fixedTypeScoped);
+      final transient1 = scope1.provider.getService(fixedTypeTransient);
+      final transient2 = scope2.provider.getService(fixedTypeTransient);
+      scope1.dispose();
+      scope2.dispose();
+      expect(singleton1, same(singleton2));
+      expect(singleton1Instanced, same(singleton2Instanced));
+      expect(scoped1, isNot(same(scoped2)));
+      expect(transient1, isNot(same(transient2)));
+    });
   });
 }
 
@@ -168,6 +186,11 @@ List<ServiceDescriptor> iterableDynamicServices = [
   myScopedService,
   myTransientService,
 ];
+
+SingletonDescriptor<IMySingletonService> fixedTypeSingleton = SingletonDescriptor(factory: (p) => MySingletonService());
+SingletonDescriptor<IMySingletonService> fixedTypeSingleton1 = SingletonDescriptor.from(MySingletonServiceInstanced());
+ScopedDescriptor<IMyScopedService> fixedTypeScoped = ScopedDescriptor(factory: (p) => MyScopedService());
+TransientDescriptor<IMyTransientService> fixedTypeTransient = TransientDescriptor(factory: (p) => MyTransientService());
 
 abstract interface class IMySingletonService implements IDisposable {}
 
