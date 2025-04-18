@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Enhance Service Descriptor with Specific Lifetime Descriptors
+
 ## 1.0.4
 
 - Implement extension methods for IServiceProvider for retrieving multiple services by descriptors.
