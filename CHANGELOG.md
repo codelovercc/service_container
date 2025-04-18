@@ -1,3 +1,7 @@
+## 1.0.8
+
+- Downgrade meta dependency to 1.15.0
+
 ## 1.0.7
 
 - Add service container configuration and override capability
