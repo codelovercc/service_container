@@ -17,9 +17,15 @@ typedef ServiceFactory<T> = T Function(IServiceProvider p);
 // late is unnecessary, Top-level variables and static fields are implicitly late, so they don't need to be explicitly marked.
 // late SingletonDescriptor<String> _myStringSingleton = SingletonDescriptor(factory: f);
 
+/// Describe a service
 class ServiceDescriptor<T> {
+  /// The type of the service
   final Type serviceType;
+
+  /// The life-time of the service
   final ServiceLifeTime lifeTime;
+
+  /// The factory method of the service
   late final ServiceFactory<T> factory;
 
   /// cache for per [ServiceDescriptor] instance.
@@ -41,20 +47,35 @@ class ServiceDescriptor<T> {
   /// When `null`, it's not a singleton service.
   final bool? _autoDispose;
 
+  /// Singleton descriptor
+  ///
+  /// Use [SingletonDescriptor] for service definition if you don't want someone rewrite your service to another life-time service.
   ServiceDescriptor.singleton(this.factory)
       : lifeTime = ServiceLifeTime.singleton,
         serviceType = T,
         _autoDispose = true;
+
+  /// Singleton descriptor
+  ///
+  /// Use [SingletonDescriptor] for service definition if you don't want someone rewrite your service to another life-time service.
   ServiceDescriptor.singletonFrom(T instance)
       : lifeTime = ServiceLifeTime.singleton,
         serviceType = T,
         _autoDispose = false {
     factory = (_) => instance;
   }
+
+  /// Scoped descriptor
+  ///
+  /// Use [ScopedDescriptor] for service definition if you don't want someone rewrite your service to another life-time service.
   ServiceDescriptor.scoped(this.factory)
       : lifeTime = ServiceLifeTime.scoped,
         serviceType = T,
         _autoDispose = null;
+
+  /// Transient descriptor
+  ///
+  /// Use [TransientDescriptor] for service definition if you don't want someone rewrite your service to another life-time service.
   ServiceDescriptor.transient(this.factory)
       : lifeTime = ServiceLifeTime.transient,
         serviceType = T,
@@ -62,4 +83,42 @@ class ServiceDescriptor<T> {
 
   @override
   String toString() => "Descriptor: $hashCode ServiceType: $T LifeTime: ${lifeTime.name}";
+}
+
+/// Singleton descriptor
+///
+/// Use this type for service definition if you don't want someone rewrite your service to another life-time service.
+///
+/// Example:
+/// ```dart
+/// SingletonDescriptor<String> mySingletonService = SingletonDescriptor<String>(factory: _createStringFactory);
+/// ```
+class SingletonDescriptor<T> extends ServiceDescriptor<T> {
+  SingletonDescriptor({required ServiceFactory<T> factory}) : super.singleton(factory);
+
+  SingletonDescriptor.from(super.instance) : super.singletonFrom();
+}
+
+/// Scoped descriptor
+///
+/// Use this type for service definition if you don't want someone rewrite your service to another life-time service.
+///
+/// Example:
+/// ```dart
+/// ScopedDescriptor<String> myScopedService = ScopedDescriptor<String>(factory: _createStringFactory);
+/// ```
+class ScopedDescriptor<T> extends ServiceDescriptor<T> {
+  ScopedDescriptor({required ServiceFactory<T> factory}) : super.scoped(factory);
+}
+
+/// Transient descriptor
+///
+/// Use this type for service definition if you don't want someone rewrite your service to another life-time service.
+///
+/// Example:
+/// ```dart
+/// TransientDescriptor<String> myTransientService = TransientDescriptor<String>(factory: _createStringFactory);
+/// ```
+class TransientDescriptor<T> extends ServiceDescriptor<T> {
+  TransientDescriptor({required ServiceFactory<T> factory}) : super.transient(factory);
 }
