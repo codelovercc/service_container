@@ -187,10 +187,10 @@ List<ServiceDescriptor> iterableDynamicServices = [
   myTransientService,
 ];
 
-SingletonDescriptor<IMySingletonService> fixedTypeSingleton = SingletonDescriptor(factory: (p) => MySingletonService());
+SingletonDescriptor<IMySingletonService> fixedTypeSingleton = SingletonDescriptor((p) => MySingletonService());
 SingletonDescriptor<IMySingletonService> fixedTypeSingleton1 = SingletonDescriptor.from(MySingletonServiceInstanced());
-ScopedDescriptor<IMyScopedService> fixedTypeScoped = ScopedDescriptor(factory: (p) => MyScopedService());
-TransientDescriptor<IMyTransientService> fixedTypeTransient = TransientDescriptor(factory: (p) => MyTransientService());
+ScopedDescriptor<IMyScopedService> fixedTypeScoped = ScopedDescriptor((p) => MyScopedService());
+TransientDescriptor<IMyTransientService> fixedTypeTransient = TransientDescriptor((p) => MyTransientService());
 
 abstract interface class IMySingletonService implements IDisposable {}
 

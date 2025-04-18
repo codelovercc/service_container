@@ -94,7 +94,7 @@ class ServiceDescriptor<T> {
 /// SingletonDescriptor<String> mySingletonService = SingletonDescriptor<String>(factory: _createStringFactory);
 /// ```
 class SingletonDescriptor<T> extends ServiceDescriptor<T> {
-  SingletonDescriptor({required ServiceFactory<T> factory}) : super.singleton(factory);
+  SingletonDescriptor(super.factory) : super.singleton();
 
   SingletonDescriptor.from(super.instance) : super.singletonFrom();
 }
@@ -108,7 +108,7 @@ class SingletonDescriptor<T> extends ServiceDescriptor<T> {
 /// ScopedDescriptor<String> myScopedService = ScopedDescriptor<String>(factory: _createStringFactory);
 /// ```
 class ScopedDescriptor<T> extends ServiceDescriptor<T> {
-  ScopedDescriptor({required ServiceFactory<T> factory}) : super.scoped(factory);
+  ScopedDescriptor(super.factory) : super.scoped();
 }
 
 /// Transient descriptor
@@ -120,5 +120,5 @@ class ScopedDescriptor<T> extends ServiceDescriptor<T> {
 /// TransientDescriptor<String> myTransientService = TransientDescriptor<String>(factory: _createStringFactory);
 /// ```
 class TransientDescriptor<T> extends ServiceDescriptor<T> {
-  TransientDescriptor({required ServiceFactory<T> factory}) : super.transient(factory);
+  TransientDescriptor(super.factory) : super.transient();
 }
