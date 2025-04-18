@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Streamline service descriptor constructors
+
 ## 1.0.5
 
 - Enhance Service Descriptor with Specific Lifetime Descriptors
