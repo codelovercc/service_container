@@ -1,10 +1,17 @@
+import 'package:meta/meta.dart';
 import 'package:service_container/service_container.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("Service container", () {
     late ServiceProvider provider;
-    setUp(() => provider = ServiceProvider(printDebugLogs: true));
+    setUpAll(() {
+      // Configure the service container before using it
+      MyContainerConfigure().configure();
+    });
+    setUp(() {
+      return provider = ServiceProvider(printDebugLogs: true);
+    });
     tearDown(() {
       provider.dispose();
     });
@@ -146,6 +153,10 @@ void main() {
       expect(scoped1, isNot(same(scoped2)));
       expect(transient1, isNot(same(transient2)));
     });
+    test("ContainerConfigure should work", () {
+      final str = provider.getService(mySingletonString);
+      expect(str, equals("Hi, World"));
+    });
   });
 }
 
@@ -191,6 +202,17 @@ SingletonDescriptor<IMySingletonService> fixedTypeSingleton = SingletonDescripto
 SingletonDescriptor<IMySingletonService> fixedTypeSingleton1 = SingletonDescriptor.from(MySingletonServiceInstanced());
 ScopedDescriptor<IMyScopedService> fixedTypeScoped = ScopedDescriptor((p) => MyScopedService());
 TransientDescriptor<IMyTransientService> fixedTypeTransient = TransientDescriptor((p) => MyTransientService());
+
+SingletonDescriptor<String> mySingletonString = SingletonDescriptor((p) => "Hello World");
+
+class MyContainerConfigure extends ContainerConfigure {
+  @mustCallSuper
+  @override
+  void configure() {
+    super.configure();
+    mySingletonString = SingletonDescriptor((p) => "Hi, World");
+  }
+}
 
 abstract interface class IMySingletonService implements IDisposable {}
 

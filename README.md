@@ -74,15 +74,19 @@ void main() {
 
 // define services
 
-ServiceDescriptor<IMySingletonService> singletonService = ServiceDescriptor.singleton((p) => MySingletonService());
-ServiceDescriptor<IMyScopedService> scopedService = ServiceDescriptor.scoped((p) => MyScopedService());
-ServiceDescriptor<IMyTransientService> transientService = ServiceDescriptor.transient((p) => MyTransientService());
+ServiceDescriptor<IMySingletonService> singletonService = ServiceDescriptor.singleton((p) =>
+    MySingletonService());
+ServiceDescriptor<IMyScopedService> scopedService = ServiceDescriptor.scoped((p) =>
+    MyScopedService());
+ServiceDescriptor<IMyTransientService> transientService = ServiceDescriptor.transient((p) =>
+    MyTransientService());
 ServiceDescriptor<MyScopedDependencyService> scopedDependencyService = ServiceDescriptor.scoped(
-  (p) => MyScopedDependencyService(
-    singletonService: p.getService(singletonService),
-    scopedService: p.getService(scopedService),
-    transientService: p.getService(transientService),
-  ),
+      (p) =>
+      MyScopedDependencyService(
+        singletonService: p.getService(singletonService),
+        scopedService: p.getService(scopedService),
+        transientService: p.getService(transientService),
+      ),
 );
 
 abstract interface class IMySingletonService implements IDisposable {}
@@ -153,6 +157,40 @@ always use `$logPrinter` service as your log printer.
 
 To configure service container logging use `ServiceContainerLogging` class.
 
+## Override services
+
+You can reset the value of a descriptor when you can access the variable of the
+descriptor,
+but please note, do overrides before using the services, typically, overrides applied before
+`ServiceProvider` created.  
+There's a `ContainerConfigure` class can doing this:
+
+```dart
+
+SingletonDescriptor<String> mySingletonString = SingletonDescriptor((p) => "Hello World");
+
+class MyContainerConfigure extends ContainerConfigure {
+  @mustCallSuper
+  @override
+  void configure() {
+    super.configure();
+    mySingletonString = SingletonDescriptor((p) => "Hi, World");
+  }
+}
+
+void main() {
+  // Configure the service container before using it
+  MyContainerConfigure().configure();
+  final p = ServiceProvider();
+  final s = p.getService(mySingletonString);
+  print(s);
+}
+```
+
+In this way, you can configure the overridable service descriptors in different packages uniformly
+to replace different service implementations, especially you have multi packages in your project.
+
 ## Additional information
 
-In Flutter, you can use [flutter_service_container](https://pub.dev/packages/flutter_service_container).
+In Flutter, you can
+use [flutter_service_container](https://pub.dev/packages/flutter_service_container).
