@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:service_container/service_container.dart';
 import 'package:test/test.dart';
 
@@ -7,7 +6,7 @@ void main() {
     late ServiceProvider provider;
     setUpAll(() {
       // Configure the service container before using it
-      MyContainerConfigure().configure();
+      containerConfigure.configureMyServices();
     });
     setUp(() {
       return provider = ServiceProvider(printDebugLogs: true);
@@ -205,11 +204,8 @@ TransientDescriptor<IMyTransientService> fixedTypeTransient = TransientDescripto
 
 SingletonDescriptor<String> mySingletonString = SingletonDescriptor((p) => "Hello World");
 
-class MyContainerConfigure extends ContainerConfigure {
-  @mustCallSuper
-  @override
-  void configure() {
-    super.configure();
+extension MyContainerConfigure on ContainerConfigure {
+  void configureMyServices() {
     mySingletonString = SingletonDescriptor((p) => "Hi, World");
   }
 }

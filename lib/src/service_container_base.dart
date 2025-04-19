@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
 
 part 'extensions.dart';
 part 'implements.dart';
@@ -64,41 +63,35 @@ abstract interface class IServiceScopeFactory {
   IServiceScope createScope();
 }
 
+/// A const instance of [ContainerConfigure]
+const containerConfigure = ContainerConfigure._();
+
 /// Service container configuration.
 ///
 /// Provide a way to configure the service container,
 /// e.g. by rewriting the value of the service descriptor in order to replace the implementation of the service.
 ///
 /// Usage: <br/>
-/// Extends this class and override the [configure] method.
-/// Let us say you have a custom subclass of [ContainerConfigure] named `MyContainerConfigure`, then you can do this:
+/// By adding extension methods on [ContainerConfigure], you can configure the overridable service descriptors in different packages uniformly,
+/// then you can do this:
 /// ```dart
-/// SingletonDescriptor<String> mySingletonString = SingletonDescriptor((p) => "Hello World");
+/// SingletonDescriptor<String> $String = SingletonDescriptor((p) => "Hello World");
 ///
-/// class MyContainerConfigure extends ContainerConfigure {
-///   @mustCallSuper
-///   @override
-///   void configure() {
-///     super.configure();
-///     mySingletonString = SingletonDescriptor((p) => "Hi, World");
-///   }
+/// extension MyContainerConfigureExtension on ContainerConfigure {
+/// void configureMyService() {
+///     $String = SingletonDescriptor((p) => "Hi, World");
+/// }
 /// }
 ///
 /// void main() {
 ///   // Configure the service container before using it
-///   MyContainerConfigure().configure();
+///   containerConfigure.configureMyService();
 ///   final p = ServiceProvider();
-///   final s = p.getService(mySingletonString);
+///   final s = p.getService($String);
 ///   print(s);
 /// }
 /// ```
 /// In this way, you can configure the overridable service descriptors in different packages uniformly to replace different service implementations.
-class ContainerConfigure {
-  /// Override this method to reconfigure the service descriptor in this method,
-  /// e.g. by rewriting the value of the service descriptor in order to replace the implementation of the service.
-  ///
-  /// The default implementation does nothing.
-  @mustCallSuper
-  @mustBeOverridden
-  void configure() {}
+final class ContainerConfigure {
+  const ContainerConfigure._();
 }
