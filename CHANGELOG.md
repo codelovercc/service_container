@@ -1,3 +1,7 @@
+## 1.0.9
+
+- Refactor Container Configuration with Extensions
+
 ## 1.0.8
 
 - Downgrade meta dependency to 1.15.0
