@@ -228,7 +228,7 @@ abstract class ServiceContainerLogging {
 
   static StreamSubscription<LogRecord>? _subscription;
 
-  /// Listen to [onRecord] and user [$logPrinter] service to print logs. Call this method will enable debug logging.
+  /// Listen to [onRecord] and use [$LogPrinter] service to print logs. Call this method will enable debug logging.
   ///
   /// Additional info see [enableDebugLogging]
   static void enableDebugLogPrinter(IServiceProvider p) {
@@ -237,7 +237,7 @@ abstract class ServiceContainerLogging {
       if (_subscription != null) {
         return true;
       }
-      final printer = p.getService($logPrinter);
+      final printer = p.getService($LogPrinter);
 
       _subscription = _logger?.onRecord.listen(printer.printLog);
       return true;
