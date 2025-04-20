@@ -145,15 +145,40 @@ class MyScopedDependencyService {
 
 ```
 
+## Service descriptor naming
+
+When using the Service Descriptor to define a service, use the following naming conventions:
+
+- Variable names start with `$` or `_$`, and `_$` is used for private variables.
+- Variable names use the name of the service type
+
+With this naming convention, it will be easier for you to use this rule to get the service instance
+you need, the naming in the example code above is only a usage example, and in a formal project
+please adhere to that naming convention.
+
+Example：
+
+```dart
+// The service type is `LogPrinter` and the variable name is `$LogPrinter`.
+ServiceDescriptor<LogPrinter> $LogPrinter = ServiceDescriptor.singleton((p) => ConsoleLogPrinter());
+// The service type is `IMySingletonService` and the variable name is `_$IMySingletonService`, it's private.
+ServiceDescriptor<IMySingletonService> _$IMySingletonService = ServiceDescriptor.singleton((p) =>
+    MySingletonService());
+```
+
 ## Logging
 
 Use [logging](https://pub.dev/packages/logging) package to logging.  
 ***Logging only available in debug mode***  
+Typically, use `ServiceProvider({bool printDebugLogs = false})` constructor and pass
+`printDebugLogs: true` to enable logging.
+
+If that can't fitted you, you can use `ServiceContainerLogging` class.  
 Use `ServiceContainerLogging.enableDebugLogging()` to enable logging in debug mode.  
 Use `ServiceContainerLogging.enableDebugLogPrinter(provider)` to print logs in debug mode.  
-You can reset Top-level variable `$logPrinter` that defines
+You can reset Top-level variable `$LogPrinter` that defines
 in [services.dart](lib/src/services.dart) to custom your log printer,
-always use `$logPrinter` service as your log printer.
+always use `$LogPrinter` service as your log printer.
 
 To configure service container logging use `ServiceContainerLogging` class.
 
