@@ -1,3 +1,7 @@
+## 1.0.11
+
+- Update service descriptor naming convention
+
 ## 1.0.10
 
 - Update service descriptor naming convention
