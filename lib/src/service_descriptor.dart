@@ -122,3 +122,20 @@ class ScopedDescriptor<T> extends ServiceDescriptor<T> {
 class TransientDescriptor<T> extends ServiceDescriptor<T> {
   TransientDescriptor(super.factory) : super.transient();
 }
+
+/// Singleton future descriptor that supports asynchronous initialization.
+class SingletonFutureDescriptor<T> extends SingletonDescriptor<Future<T>> {
+  SingletonFutureDescriptor(super.factory);
+
+  SingletonFutureDescriptor.from(super.instance);
+}
+
+/// Scoped future descriptor that supports asynchronous initialization.
+class ScopedFutureDescriptor<T> extends ScopedDescriptor<Future<T>> {
+  ScopedFutureDescriptor(super.factory);
+}
+
+/// Transient future descriptor that supports asynchronous initialization.
+class TransientFutureDescriptor<T> extends TransientDescriptor<Future<T>> {
+  TransientFutureDescriptor(super.factory);
+}

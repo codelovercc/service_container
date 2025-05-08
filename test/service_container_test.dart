@@ -156,8 +156,44 @@ void main() {
       final str = provider.getService(mySingletonString);
       expect(str, equals("Hi, World"));
     });
+    test("AsyncInitService should work", () async {
+      final scope = provider.createScope();
+      final s = await scope.provider.getService($AsyncInitService);
+      expect(s.getMessage(), equals(s.toString()));
+      final s2 = await scope.provider.getService($AsyncInitService);
+      expect(s, same(s2));
+      await scope.disposeAsync();
+      final scope1 = provider.createScope();
+      final s1 = await scope1.provider.getService($AsyncInitService1);
+      expect(s1.getMessage(), equals(s1.toString()));
+      scope1.dispose();
+      expect(s, isNot(same(s1)));
+    });
   });
 }
+
+class AsyncInitService {
+  late final String message;
+
+  Future<void> init() async {
+    await Future<void>.delayed(Duration(milliseconds: 10));
+    message = "Hello AsyncInitService $hashCode";
+  }
+
+  String getMessage() => message;
+
+  @override
+  String toString() => "Hello AsyncInitService $hashCode";
+}
+
+ScopedDescriptor<Future<AsyncInitService>> $AsyncInitService = ScopedDescriptor((p) async {
+  final s = AsyncInitService();
+  await s.init();
+  return s;
+});
+
+ScopedFutureDescriptor<AsyncInitService> $AsyncInitService1 =
+    ScopedFutureDescriptor((p) async => await p.getService($AsyncInitService));
 
 ServiceDescriptor<IMySingletonService> mySingletonService = ServiceDescriptor.singleton((p) => MySingletonService());
 ServiceDescriptor<IMySingletonService> mySingletonServiceInstanced =
@@ -225,6 +261,7 @@ class MySingletonService implements IMySingletonService {
 
 class MySingletonServiceInstanced implements IMySingletonService {
   bool disposed = false;
+
   MySingletonServiceInstanced() {
     print("MySingletonServiceInstanced $hashCode constructing");
   }
@@ -321,6 +358,7 @@ class MyInvalidScopedDependencySingletonService {
 
 class MyScopedAsyncDisposableService implements IAsyncDisposable {
   bool disposed = false;
+
   MyScopedAsyncDisposableService() {
     print("MyScopedAsyncDisposableService $hashCode constructing");
   }

@@ -145,7 +145,31 @@ class MyScopedDependencyService {
 
 ```
 
-## Service descriptor naming
+## Services definition
+
+- Use `SingletonDescriptor`, `ScopedDescriptor`, `TransientDescriptor`, `SingletonFutureDescriptor`,
+  `ScopedFutureDescriptor`,`TransientFutureDescriptor` to define services that the
+  service life-time can not be changed in runtime.
+- Use `ServiceDescriptor` to define services that the service life-time can be changed in runtime.
+- Use variable modifiers(`final`, `static`, `const`,`late`, etc.) to define services if they are
+  necessarily.
+- Use `Future<T>` as the type of the service or `SingletonFutureDescriptor`,
+  `ScopedFutureDescriptor`,`TransientFutureDescriptor` to define services that need to be
+  initialized asynchronously.  
+  Example:
+  ```dart
+  ScopedDescriptor<Future<AsyncInitService>> $AsyncInitService = ScopedDescriptor((p) async {
+    final s = AsyncInitService();
+    // Initialize the service asynchronously
+    await s.init();
+    return s;
+  });
+  ScopedFutureDescriptor<AsyncInitService> $AsyncInitService1 = ScopedFutureDescriptor((p) async =>
+    await p.getService($AsyncInitService));
+  ```
+  and use `await provider.getService($AsyncInitService);` to get the service instance.
+
+### Service descriptor naming
 
 When using the Service Descriptor to define a service, use the following naming conventions:
 
