@@ -1,3 +1,8 @@
+## 1.0.12
+
+- Add async descriptor types.
+- Update async init service doc.
+
 ## 1.0.11
 
 - Update service descriptor naming convention
