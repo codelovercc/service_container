@@ -1,3 +1,17 @@
+## 1.1.0
+
+Breaking changes:
+
+Make `ServiceContainerLogging` an extension on `ContainerConfigure`
+
+Migrations:
+
+- `ServiceContainerLogging.enableDebugLogPrinter` method to
+  `containerConfigure.enableDebugLogPrinter`
+- `ServiceContainerLogging.enableDebugLogging` method to `containerConfigure.enableDebugLogging`
+- `ServiceContainerLogging.loggingEnabled` to `ContainerConfigure.loggingEnabled`
+- `ServiceContainerLogging.onRecord` to `ContainerConfigure.onRecord`
+
 ## 1.0.12
 
 - Add async descriptor types.
