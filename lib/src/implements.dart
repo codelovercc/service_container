@@ -26,7 +26,7 @@ class _ServiceProviderScope implements IServiceScope, IServiceProvider {
     _root = this;
     assert(() {
       if (printDebugLogs) {
-        ServiceContainerLogging.enableDebugLogPrinter(this);
+        containerConfigure.enableDebugLogPrinter(this);
       }
       _logger?.info("Service scope $hashCode constructing, root: $_isRoot");
       return true;

@@ -94,4 +94,17 @@ const containerConfigure = ContainerConfigure._();
 /// In this way, you can configure the overridable service descriptors in different packages uniformly to replace different service implementations.
 final class ContainerConfigure {
   const ContainerConfigure._();
+
+  /// Whether logs for service containers are enabled.
+  static bool get loggingEnabled => ServiceContainerLogging._enableLogging;
+
+  /// Get the logger stream for service container. if [loggingEnabled] is `false`, it will return `null`.
+  ///
+  /// When [hierarchicalLoggingEnabled] is `ture`, the listeners will only receive logs from service container logger.
+  /// When `false`, the listeners actually listen to [Logger.root] and will receive logs from all loggers.
+  ///
+  /// Regardless of whether [hierarchicalLoggingEnabled] is ture or not,
+  /// the listeners of [Logger.root] will always receive logs from all loggers,
+  /// unless the current listener is listening to a detached logger.
+  static Stream<LogRecord>? get onRecord => ServiceContainerLogging._logger?.onRecord;
 }

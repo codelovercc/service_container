@@ -179,23 +179,10 @@ class ConsoleLogPrinter implements LogPrinter {
 }
 
 /// Config service container's logging.
-abstract class ServiceContainerLogging {
+extension ServiceContainerLogging on ContainerConfigure {
   static bool _enableLogging = false;
 
-  /// Whether logs for service containers are enabled.
-  static bool get loggingEnabled => _enableLogging;
-
   static Logger? _logger;
-
-  /// Get the logger stream for service container. if [loggingEnabled] is `false`, it will return `null`.
-  ///
-  /// When [hierarchicalLoggingEnabled] is `ture`, the listeners will only receive logs from service container logger.
-  /// When `false`, the listeners actually listen to [Logger.root] and will receive logs from all loggers.
-  ///
-  /// Regardless of whether [hierarchicalLoggingEnabled] is ture or not,
-  /// the listeners of [Logger.root] will always receive logs from all loggers,
-  /// unless the current listener is listening to a detached logger.
-  static Stream<LogRecord>? get onRecord => _logger?.onRecord;
 
   /// Enable logging for debug mode.
   /// Logging only available in debug mode, so you have to make sure call this method in `assert` or `kDebugMode` block,
@@ -215,7 +202,7 @@ abstract class ServiceContainerLogging {
   /// 2. When [hierarchicalLoggingEnabled] is `false`,
   /// do not use [enableDebugLogPrinter] method, it actually listen to [Logger.root] that will receive logs from all loggers,
   /// you can call [enableDebugLogging] and let other listeners handle logs.
-  static void enableDebugLogging() {
+  void enableDebugLogging() {
     assert(() {
       if (_enableLogging) {
         return true;
@@ -231,7 +218,7 @@ abstract class ServiceContainerLogging {
   /// Listen to [onRecord] and use [$LogPrinter] service to print logs. Call this method will enable debug logging.
   ///
   /// Additional info see [enableDebugLogging]
-  static void enableDebugLogPrinter(IServiceProvider p) {
+  void enableDebugLogPrinter(IServiceProvider p) {
     assert(() {
       enableDebugLogging();
       if (_subscription != null) {
