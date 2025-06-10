@@ -197,14 +197,14 @@ Use [logging](https://pub.dev/packages/logging) package to logging.
 Typically, use `ServiceProvider({bool printDebugLogs = false})` constructor and pass
 `printDebugLogs: true` to enable logging.
 
-If that can't fitted you, you can use `ServiceContainerLogging` class.  
-Use `ServiceContainerLogging.enableDebugLogging()` to enable logging in debug mode.  
-Use `ServiceContainerLogging.enableDebugLogPrinter(provider)` to print logs in debug mode.  
+If that can't fitted you, you can use `ContainerConfigure` extension methods.  
+Use `containerConfigure.enableDebugLogging()` to enable logging in debug mode.  
+Use `containerConfigure.enableDebugLogPrinter(provider)` to print logs in debug mode.  
 You can reset Top-level variable `$LogPrinter` that defines
 in [services.dart](lib/src/services.dart) to custom your log printer,
 always use `$LogPrinter` service as your log printer.
 
-To configure service container logging use `ServiceContainerLogging` class.
+To configure service container logging use `ContainerConfigure` logging extension methods.
 
 ## Override services
 
